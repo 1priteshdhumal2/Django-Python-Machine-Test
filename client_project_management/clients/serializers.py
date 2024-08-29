@@ -23,15 +23,16 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
         return user
 
-class ClientSerializer(serializers.ModelSerializer):
-    created_by = serializers.ReadOnlyField(source='created_by.username')
-
-    class Meta:
-        model = Client
-        fields = ['id', 'client_name', 'created_at', 'updated_at', 'created_by']
-        read_only_fields = ['created_at', 'created_by']
-
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fiels = '__all__'
+        fields = '__all__'
+
+class ClientSerializer(serializers.ModelSerializer):
+    created_by = serializers.ReadOnlyField(source='created_by.username')
+    projects = ProjectSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Client
+        fields = ['id', 'client_name','projects', 'created_at', 'updated_at', 'created_by']
+        read_only_fields = ['created_at', 'created_by']

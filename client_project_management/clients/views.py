@@ -19,5 +19,20 @@ class ClientListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
 
+class ClientDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+    authentication_classes = [TokenAuthentication]
+    permissions_classes = [permissions.IsAuthenticated]
+
+class ProjectCreateView(generics.CreateAPIView):
+    serializer_class = ProjectSerializer
+    authentication_classes = [TokenAuthentication]
+    permissions_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        client = Client.objects.get(pk=self.kwargs['pk'])
+        serializer.save(client = client, created_by=self.request.user)
+
 
 
