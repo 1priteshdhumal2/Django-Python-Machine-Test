@@ -2,12 +2,12 @@ from rest_framework import generics, permissions
 from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.models import User
 from .models import Client, Project
-from .serializers import ClientSerializer, ProjectSerializer, UserRegistrationSerializer
+from .serializers import ClientSerializer, ProjectSerializer, UserRegistrationSerializer, SimpleProjectListSerializer
 
 # Create your views here.
 class UserRegistrationView(generics.CreateAPIView):
-    permission_classes = [permissions.AllowAny]
     queryset = User.objects.all()
+    permission_classes = [permissions.AllowAny]
     serializer_class = UserRegistrationSerializer
 
 class ClientListCreateView(generics.ListCreateAPIView):
@@ -35,7 +35,7 @@ class ProjectCreateView(generics.CreateAPIView):
         serializer.save(client = client, created_by=self.request.user)
 
 class UserProjectsListView(generics.ListAPIView):
-    serializer_class = ProjectSerializer
+    serializer_class = SimpleProjectListSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
