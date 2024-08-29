@@ -24,7 +24,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
 
 class ClientSerializer(serializers.ModelSerializer):
-    created_by = serializers.ReadOnlyField()
+    created_by = serializers.ReadOnlyField(source='created_by.username')
 
     class Meta:
         model = Client
