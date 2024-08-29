@@ -10,6 +10,8 @@ This project is a Django REST API application that allows users to:
 6. Add new projects for a client and assign users to those projects.
 7. Retrieve projects assigned to logged-in users.
 
+**NOTE**: Scroll to end for my images.
+
 ## Prerequisites
 
 - Python 3.7 or higher
