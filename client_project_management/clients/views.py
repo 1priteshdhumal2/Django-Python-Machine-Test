@@ -34,5 +34,13 @@ class ProjectCreateView(generics.CreateAPIView):
         client = Client.objects.get(pk=self.kwargs['pk'])
         serializer.save(client = client, created_by=self.request.user)
 
+class UserProjectsListView(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return self.request.user.projects.all()
+
 
 
