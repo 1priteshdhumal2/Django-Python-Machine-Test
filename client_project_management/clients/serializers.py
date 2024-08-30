@@ -41,12 +41,15 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         users_data = self.initial_data.get('users',[])
+        client = validated_data.get('client')
+        project_name = validated_data.get('project_name')
+        project = Project.objects.filter(client=client, project_name=project_name).first()
         validated_data.pop('users',[])
 
-        project = Project.objects.create(**validated_data)
+        if not project:
+            project = Project.objects.create(**validated_data)
         for user_data in users_data:
             user = User.objects.get(pk=user_data['id'])
-            print(user)
             project.users.add(user)
         return project
 
