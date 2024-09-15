@@ -40,17 +40,26 @@ class ProjectSerializer(serializers.ModelSerializer):
         read_only_fields = ['client','created_at', 'created_by']
 
     def create(self, validated_data):
+        print("Validated Data:", validated_data)
+
         users_data = self.initial_data.get('users',[])
+        print("Users Data:", users_data)
+        
         client = validated_data.get('client')
         project_name = validated_data.get('project_name')
+        print("Client:", client, "Project Name:", project_name)
+        
         project = Project.objects.filter(client=client, project_name=project_name).first()
         validated_data.pop('users',[])
 
         if not project:
+            print("Creating new project...")
             project = Project.objects.create(**validated_data)
         for user_data in users_data:
+            print(f"Adding user with id {user_data['id']}")
             user = User.objects.get(pk=user_data['id'])
             project.users.add(user)
+        print("Project Created:", project)
         return project
 
 class SimpleProjectSerializer(serializers.ModelSerializer):
